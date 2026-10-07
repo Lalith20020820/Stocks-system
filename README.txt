@@ -1,0 +1,1 @@
+Upload these 5 files to the ROOT of your GitHub repository and replace the old versions. Then enable GitHub Pages from Settings > Pages > Deploy from branch > main > /(root).

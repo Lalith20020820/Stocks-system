@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Oktoberfest Stock System</title>
+<style>
+:root{--bg:#08111f;--card:#111d30;--card2:#172740;--tx:#f5f7fb;--mu:#91a0b5;--ac:#f2b632;--bd:#263750;--hd:#1a2b45;box-sizing:border-box}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at 12% 0%,rgba(242,182,50,.09),transparent 28%),linear-gradient(180deg,#07101d,#0b1423);color:var(--tx);font:14px Inter,Segoe UI,Arial,sans-serif;padding:28px;max-width:1280px;margin:auto}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.16;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:40px 40px}
+body>div#v>h1:first-child{margin:0 0 20px;padding:18px 22px;border:1px solid var(--bd);border-radius:16px;background:linear-gradient(135deg,#142239,#0f1b2e);box-shadow:0 14px 30px rgba(0,0,0,.22);font-size:25px}
+.c{background:linear-gradient(180deg,rgba(18,31,50,.98),rgba(13,24,40,.98));border:1px solid var(--bd);border-radius:15px;padding:18px;margin-bottom:16px;box-shadow:0 10px 25px rgba(0,0,0,.17)}
+.g{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:16px}
+.k{background:linear-gradient(180deg,#172740,#111d31);border:1px solid var(--bd);border-radius:14px;padding:17px;text-align:left}
+.k b{display:block;font-size:29px;color:#fff;margin-bottom:7px}.k span{color:var(--mu);font-size:10px;text-transform:uppercase;letter-spacing:.6px}
+.k b:before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ac);margin:0 8px 5px 0}
+label{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:#8493a9;margin:7px 0 5px}
+input,select{width:100%;padding:10px;border:1px solid var(--bd);border-radius:9px;background:#0a1525;color:var(--tx);font-size:13px;outline:none}
+input:focus,select:focus{border-color:rgba(242,182,50,.7);box-shadow:0 0 0 3px rgba(242,182,50,.08)}
+.f{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;align-items:end}
+.w{overflow:auto;border:1px solid var(--bd);border-radius:11px}
+table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:620px}
+th{background:var(--hd);color:#a2afc1;font-size:10px;text-transform:uppercase;letter-spacing:.5px}
+th,td{border-bottom:1px solid #23334b;padding:10px 8px;text-align:center}
+td:first-child{text-align:left;font-weight:650;color:#edf1f7}
+tr:hover td{background:rgba(255,255,255,.018)}
+tr.t td{background:rgba(242,182,50,.09);color:#ffd66d;font-weight:800}
+.b{background:#172840;color:#cbd5e2;border:1px solid var(--bd);border-radius:9px;padding:10px 14px;cursor:pointer;font-size:13px;font-weight:650;text-decoration:none;display:inline-block}
+.b.p{background:linear-gradient(135deg,#f2b632,#d99a16);color:#17120a;border-color:#f2b632;box-shadow:0 6px 17px rgba(242,182,50,.15)}
+.al{border:1px solid rgba(239,98,98,.45);background:rgba(239,98,98,.08);border-radius:13px;padding:13px;margin-bottom:14px}
+.ok{border:1px solid rgba(59,201,149,.4);background:rgba(59,201,149,.07);border-radius:13px;padding:13px;margin-bottom:14px;color:#72dfb4}
+.ng{color:#ff7b7b;font-weight:800}.x{color:#ef7777;cursor:pointer;border:0;background:none}.mu{color:var(--mu);font-size:11px}
+@media(max-width:800px){
+ body{padding:14px;max-width:none}
+ .g{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .c{padding:14px;border-radius:13px}
+ .b{min-height:42px;padding:11px 13px}
+}
+@media(max-width:520px){
+ body{padding:8px;background:#07101c}
+ body>div#v>h1:first-child{font-size:19px;padding:14px;margin-bottom:12px;border-radius:13px;line-height:1.25}
+ .g{grid-template-columns:1fr 1fr;gap:8px}
+ .k{padding:12px;border-radius:12px}
+ .k b{font-size:22px}
+ .c{padding:12px;margin-bottom:10px;border-radius:12px}
+ .f{grid-template-columns:1fr;gap:8px}
+ .b{width:100%;text-align:center}
+ .np .b{width:100%}
+ table{font-size:11px;min-width:560px}
+ th,td{padding:8px 6px}
+ .w{border-radius:9px;-webkit-overflow-scrolling:touch}
+ input,select{font-size:16px;min-height:44px}
+ label{font-size:9px}
+ .mobile-tabs{display:grid!important;grid-template-columns:1fr 1fr;gap:7px!important}
+ .mobile-tabs .b{width:100%;margin:0!important}
+ .action-grid{display:grid!important;grid-template-columns:1fr 1fr;gap:8px!important}
+ .action-grid .b{width:100%!important}
+ .admin-tools{grid-template-columns:1fr!important}
+}
+@media(max-width:360px){.g{grid-template-columns:1fr}.action-grid,.mobile-tabs{grid-template-columns:1fr!important}}
+.editbox{border:1px solid rgba(242,182,50,.35);background:rgba(242,182,50,.05);border-radius:12px;padding:12px;margin:10px 0}
+.admin-tools{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.danger{background:rgba(239,98,98,.12);color:#ff8585;border-color:rgba(239,98,98,.4)}
+@media print{body{background:#fff;color:#111}.np{display:none!important}body>div#v>h1:first-child{background:#fff;color:#111;box-shadow:none}.c,.k{background:#fff;color:#111;box-shadow:none;border:1px solid #ccc}th{background:#eee;color:#111}td{color:#111}}
+</style></head><body>
+<div id="v">Loading…</div><div style="text-align:center;color:#66758a;font-size:10px;padding:8px">Online Firebase Database • Live Firestore</div>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDPmBaVLngzmKs2gIK3PMOPkIAnH_aaXl0",
+  authDomain: "oktoberfest-stock-system.firebaseapp.com",
+  projectId: "oktoberfest-stock-system",
+  storageBucket: "oktoberfest-stock-system.firebasestorage.app",
+  messagingSenderId: "939365616744",
+  appId: "1:939365616744:web:48cd889e41695827cfbfdd"
+};
+firebase.initializeApp(firebaseConfig);
+const firestore = firebase.firestore();
+</script>
+<script>
+const ST={S1:'Stall 1',S2:'Stall 2'},DI=['EGB','Cream Soda','Necto','Orange Crush','Lemonade','Kik cola','Soda','Tonic','Ginger Ale','Water Bottle','Fito mix','Fito Orange','Fito Mango'];
+let db,U,E=[],CFG=null,F={d:td(),d1:'',d2:'',st:'main'},dirty=0,ro=false,adminEditId=null;
+function td(){return new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10)}
+const $=id=>document.getElementById(id),IT=()=>CFG||DI;
+const Q=(e,i)=>(e.it&&e.it[i])||0,sq=(i,f)=>E.filter(f).reduce((s,e)=>s+Q(e,i),0),tot=f=>IT().reduce((s,i)=>s+f(i),0);
+const op=(st,i,d)=>{const r=E.filter(e=>e.k=='ret'&&e.st==st&&e.d<d).sort((a,b)=>a.d<b.d?1:-1)[0];return r?Q(r,i):0};
+const issue=(st,i,d)=>sq(i,e=>e.k=='issue'&&e.st==st&&e.d==d);
+const rc=(st,i,d)=>sq(i,e=>e.k=='recv'&&e.st==st&&e.d==d);
+const sl=(st,i,d)=>sq(i,e=>(e.k=='sale'||e.k=='extra')&&e.st==st&&e.d==d);
+const received=(st,i,d)=>rc(st,i,d);
+const ex=(st,i,d)=>op(st,i,d)+received(st,i,d)-sl(st,i,d);
+const rt=(st,i,d)=>{const e=E.find(e=>e.k=='ret'&&e.st==st&&e.d==d);return e?Q(e,i):null};
+const bs=(st,i,d)=>rt(st,i,d)??ex(st,i,d);
+const mn=(i,d)=>sq(i,e=>e.k=='in'&&e.d<=d)-sq(i,e=>e.k=='issue'&&e.st!='MAIN'&&e.d<=d)+sq(i,e=>e.k=='ret'&&e.d<=d);
+const SH=()=>E.filter(e=>e.k=='ret').flatMap(r=>IT().map(i=>({d:r.d,st:r.st,i,e:ex(r.st,i,r.d),r:Q(r,i)})).filter(x=>x.r<x.e)).sort((a,b)=>a.d<b.d?1:-1);
+const fm=e=>Object.entries(e.it||{}).map(([i,q])=>i+' '+q).join(', ');
+function rd(){const a=document.activeElement;if(a&&/INPUT|SELECT/.test(a.tagName))dirty=1;else draw()}
+document.addEventListener('focusout',()=>{if(dirty)setTimeout(()=>{const a=document.activeElement;if(!(a&&/INPUT|SELECT/.test(a.tagName))){dirty=0;draw()}},200)});
+window.onhashchange=draw;
+const FORCED_ROLE=None;
+async function put(o){try{await db.collection('entries').add({...o,ts:Date.now()});return 1}catch(e){alert('Could not save ('+(e.code||'error')+'). You may need Contributor access – ask the owner.')}}
+function qt(c,fn){return `<div class="w"><table><tr><th>Item</th><th>Qty</th></tr>${IT().map(i=>`<tr><td>${i}</td><td><input type="number" min="0" inputmode="numeric" class="${c}" data-i="${i}" value="${fn?fn(i)??'':''}" style="width:80px"></td></tr>`).join('')}</table></div>`}
+function rv(c,all){const o={};let n=0;document.querySelectorAll('.'+c).forEach(e=>{n++;if(e.value!==''&&(all||+e.value>0))o[e.dataset.i]=+e.value});return o}
+const dt=()=>`<div class="c np"><label>Date</label><input type="date" value="${F.d}" onchange="F.d=this.value;draw()"></div>`;
+function lnk(){const b=location.href.split('#')[0];return [['stall1','Stall 1'],['stall2','Stall 2'],['supervisor','Supervisor'],['admin','Admin Dashboard']].map(([h,n])=>`<p><a class="b p" href="#${h}">${n}</a> <span class="mu">${b}#${h}</span></p>`).join('')}
+function draw(){
+  const h=FORCED_ROLE || (location.hash||'').slice(1),el=$('v');
+  const top=`<h1>🍺 Colombo Oktoberfest – Stock System</h1>${ro?'<div class="al">View only – you do not have permission to save data. Ask the owner for Contributor access.</div>':''}`;
+  const home='';
+  const menu=!h?`<div class="c">
+    <div style="font-size:11px;color:#91a0b5;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Quick Access</div>
+    <div style="font-size:20px;font-weight:800;margin-bottom:5px">Choose your workspace</div>
+    <div class="mu" style="margin-bottom:18px">Open the correct page using the links below.</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px">
+      <a class="b p" href="#stall1" style="padding:18px;text-align:left">🏪 Stall 1 Link<br><span style="font-size:10px;opacity:.75">Sales & Return</span></a>
+      <a class="b p" href="#stall2" style="padding:18px;text-align:left">🏪 Stall 2 Link<br><span style="font-size:10px;opacity:.75">Sales & Return</span></a>
+      <a class="b p" href="#supervisor" style="padding:18px;text-align:left">👨‍💼 Supervisor<br><span style="font-size:10px;opacity:.75">Daily Control</span></a>
+      <a class="b p" href="#admin" style="padding:18px;text-align:left">📊 Admin Dashboard<br><span style="font-size:10px;opacity:.75">Reports & Management</span></a>
+    </div>
+  </div>`:'';
+  el.innerHTML=top+home+(h=='stall1'?stall('S1'):h=='stall2'?stall('S2'):h=='supervisor'?sup():h=='admin'?adm():menu);
+}
+/* STALL */
+function stall(st){
+ const d=F.d,hasR=E.some(e=>e.k=='ret'&&e.st==st&&e.d==d),hasRecv=E.some(e=>e.k=='recv'&&e.st==st&&e.d==d);
+ const totalRecv=tot(i=>received(st,i,d)),totalSales=tot(i=>sl(st,i,d)),totalReturn=tot(i=>rt(st,i,d)||0),totalShort=tot(i=>{const r=rt(st,i,d);return r!=null&&r<ex(st,i,d)?ex(st,i,d)-r:0});
+ const sm=IT().map(i=>{const e=ex(st,i,d),r=rt(st,i,d),sh=r!=null&&r<e?e-r:0;return `<tr${sh?' class="rd"':''}><td>${i}</td><td>${received(st,i,d)}</td><td>${sl(st,i,d)}</td><td>${e}</td><td>${r??'-'}</td><td>${r==null?'-':r-e}</td><td>${sh||'-'}</td></tr>`}).join('');
+ const tb=F.t||'r',tabs=[['r','Stocks Received'],['s','Sales'],['t','Return'],['summary','Daily Summary']];
+ const P={
+ r:`<div class="c np"><b>Stocks Received</b><p class="mu">Enter the actual stock received from the Supervisor. This is the quantity that becomes available at your stall.</p>${qt('rq',i=>rc(st,i,d)||'')}<label>Note</label><input id="rn" placeholder="Optional note / issue reference"><p><button class="b p" onclick="subR('${st}')">Submit Received Stock</button></p>${hasRecv?'<div class="ok">✔ Received stock has already been submitted for this date. You can update it.</div>':''}</div>`,
+ s:`<div class="c np"><b>Sales</b>${qt('sq')}<p><button class="b p" onclick="subS('${st}')">Submit Sales</button></p></div>
+ <div class="c np"><b>Additional Sale</b><div class="f"><div><label>Item</label><select id="xi">${IT().map(i=>`<option>${i}</option>`).join('')}</select></div><div><label>Quantity</label><input type="number" id="xq" min="1" inputmode="numeric"></div></div><label>Note / Reason</label><input id="xr" placeholder="Enter item note or reason, e.g. staff issue / special sale"><p><button class="b p" onclick="subX('${st}')">Add Additional Sale</button></p></div>`,
+ t:`<div class="c np"><b>Return Stock (day-end count)</b> ${hasR?'<span class="mu">Submitted – you can update it.</span>':''}<p class="mu">Count what is left and enter every item (0 allowed). This becomes tomorrow's opening.</p>${qt('tq',i=>rt(st,i,d))}<p><button class="b p" onclick="subT('${st}')">Submit Return Stock</button></p></div>`,
+ summary:`<div class="c w"><b>Daily Summary – ${d}</b><p class="mu">Received stock is submitted by this stall. Sales reduce the available stock. Return is the physical closing stock. A negative difference means shortage.</p><table><tr><th>Item</th><th>Received</th><th>Sale</th><th>Expected</th><th>Return</th><th>Difference</th><th>Shortage</th></tr>${sm}</table></div>`
+ };
+ return `<h1>${ST[st]}</h1>${dt()}
+ <div class="g"><div class="k"><b>${totalRecv}</b><span>Stocks Received</span></div><div class="k"><b>${totalSales}</b><span>Sales</span></div><div class="k"><b>${totalReturn}</b><span>Return Stock</span></div><div class="k"><b>${totalShort}</b><span>Shortage</span></div></div>
+ <p class="np mobile-tabs">${tabs.map(([k,v])=>`<button class="b ${k==tb?'p':''}" onclick="F.t='${k}';draw()">${v}</button>`).join(' ')}</p>${P[tb]}`;
+}
+async function subR(st){const it=rv('rq',1);if(Object.keys(it).length<IT().length)return alert('Enter every item (0 allowed)');try{await db.collection('entries').doc('recv_'+F.d+'_'+st).set({k:'recv',st,d:F.d,it,n:$('rn').value.trim(),ts:Date.now()})}catch(e){alert('Could not save ('+(e.code||'error')+')')}}
+async function subS(st){const it=rv('sq');if(!Object.keys(it).length)return alert('Enter quantities');await put({k:'sale',st,d:F.d,it})}
+async function subX(st){const q=+$('xq').value,r=$('xr').value.trim();if(!q)return alert('Enter quantity');if(!r)return alert('Type a reason');await put({k:'extra',st,d:F.d,it:{[$('xi').value]:q},n:r})}
+async function subT(st){const it=rv('tq',1);if(Object.keys(it).length<IT().length)return alert('Enter every item (0 allowed)');try{await db.collection('entries').doc('ret_'+F.d+'_'+st).set({k:'ret',st,d:F.d,it,ts:Date.now()})}catch(e){alert('Could not save ('+(e.code||'error')+')')}}
+/* SUPERVISOR */
+function sup(){
+ const d=F.d,sh=SH(),T=f=>tot(f),tab=F.st||'main';
+ const rows=IT().map(i=>{const a=sl('S1',i,d),b=sl('S2',i,d),x=bs('S1',i,d),y=bs('S2',i,d);return `<tr><td>${i}</td><td>${mn(i,d)}</td><td>${a}</td><td>${b}</td><td>${a+b}</td><td>${x}</td><td>${y}</td><td>${x+y}</td></tr>`}).join('');
+ const issueRows=IT().map(i=>`<tr><td>${i}</td><td>${issue('S1',i,d)}</td><td>${issue('S2',i,d)}</td><td>${issue('S1',i,d)+issue('S2',i,d)}</td><td>${rt('S1',i,d)??'-'}</td><td>${rt('S2',i,d)??'-'}</td><td>${(rt('S1',i,d)||0)+(rt('S2',i,d)||0)}</td></tr>`).join('');
+ const mainRows=IT().map(i=>`<tr><td>${i}</td><td>${mn(i,d)}</td></tr>`).join('');
+ const returnRows=IT().map(i=>{const a=rt('S1',i,d),b=rt('S2',i,d),ea=ex('S1',i,d),eb=ex('S2',i,d),r=(a||0)+(b||0),e=ea+eb, diff=r-e;return `<tr${diff<0?' class="rd"':''}><td>${i}</td><td>${ea}</td><td>${a??'-'}</td><td>${b??'-'}</td><td>${r}</td><td>${diff}</td></tr>`}).join('');
+ const panel=`<div class="c np"><div class="mobile-tabs" style="display:flex;flex-wrap:wrap;gap:8px"><button class="b ${tab=='main'?'p':''}" onclick="F.st='main';draw()">Main Stock</button><button class="b ${tab=='issue'?'p':''}" onclick="F.st='issue';draw()">Issue to Stalls</button><button class="b ${tab=='return'?'p':''}" onclick="F.st='return';draw()">Returns & Check</button><button class="b ${tab=='restock'?'p':''}" onclick="F.st='restock';draw()">Restock</button><button class="b ${tab=='summary'?'p':''}" onclick="F.st='summary';draw()">Daily Summary</button></div></div>`;
+ let content='';
+ if(tab=='main') content=`<div class="g"><div class="k"><b>${T(i=>mn(i,d))}</b><span>Main Stock</span></div><div class="k"><b>${T(i=>issue('S1',i,d)+issue('S2',i,d))}</b><span>Issued to Stalls</span></div><div class="k"><b>${T(i=>(rt('S1',i,d)||0)+(rt('S2',i,d)||0))}</b><span>Physical Returns</span></div><div class="k"><b>${T(i=>sl('S1',i,d)+sl('S2',i,d))}</b><span>Total Sales</span></div></div><div class="c w"><b>Main Stock – ${d}</b><table><tr><th>Item</th><th>Physical Main Stock</th></tr>${mainRows}<tr class="t"><td>Total</td><td>${T(i=>mn(i,d))}</td></tr></table></div><div class="ok">✔ Supervisor maintains only the Main Stock here. Stall Received, Sales and Return are submitted from the stall links.</div>`;
+ if(tab=='issue') content=`<div class="c np"><b>Issue Stock to Stall</b><p class="mu">Issue stock from Main Stock. The selected stall then confirms the actual quantity received from its own page.</p><div class="f"><div><label>Issue Date</label><input type="date" id="idate" value="${d}"></div><div><label>Stall</label><select id="ist"><option value="S1">Stall 1</option><option value="S2">Stall 2</option></select></div></div>${qt('iq')}<p><button class="b p" onclick="subIssue()">Issue Stock to Stall</button></p></div><div class="c w"><b>Today's Stall Issues</b><table><tr><th>Item</th><th>Stall 1 Issued</th><th>Stall 2 Issued</th><th>Total Issued</th><th>S1 Return</th><th>S2 Return</th><th>Total Return</th></tr>${issueRows}<tr class="t"><td>Total</td><td>${T(i=>issue('S1',i,d))}</td><td>${T(i=>issue('S2',i,d))}</td><td>${T(i=>issue('S1',i,d)+issue('S2',i,d))}</td><td>${T(i=>rt('S1',i,d)||0)}</td><td>${T(i=>rt('S2',i,d)||0)}</td><td>${T(i=>(rt('S1',i,d)||0)+(rt('S2',i,d)||0))}</td></tr></table></div>`;
+ if(tab=='return') {
+   const shortageHtml=sh.length ? '<div class="al"><b class="ng">⚠ Shortages ('+sh.length+')</b><div class="w"><table><tr><th>Date</th><th>Stall</th><th>Item</th><th>Expected</th><th>Returned</th><th>Short</th></tr>'+sh.map(x=>'<tr class="rd"><td>'+x.d+'</td><td>'+ST[x.st]+'</td><td>'+x.i+'</td><td>'+x.e+'</td><td>'+x.r+'</td><td>-'+(x.e-x.r)+'</td></tr>').join('')+'</table></div></div>' : '<div class="ok">✔ No shortages</div>';
+   content=`<div class="c w"><b>Physical Return Check – ${d}</b><p class="mu">Compare the stock expected at each stall with the physical quantity they returned. Negative difference = shortage. Actual returned stock is added back to Main Stock.</p><table><tr><th>Item</th><th>Expected</th><th>Stall 1 Return</th><th>Stall 2 Return</th><th>Combined Return</th><th>Difference</th></tr>${returnRows}<tr class="t"><td>Total</td><td>${T(i=>ex('S1',i,d)+ex('S2',i,d))}</td><td>${T(i=>rt('S1',i,d)||0)}</td><td>${T(i=>rt('S2',i,d)||0)}</td><td>${T(i=>(rt('S1',i,d)||0)+(rt('S2',i,d)||0))}</td><td>${T(i=>(rt('S1',i,d)||0)+(rt('S2',i,d)||0)-ex('S1',i,d)-ex('S2',i,d))}</td></tr></table></div>`+shortageHtml;
+ }
+ if(tab=='restock') content=`<div class="c np"><b>Add New Stock Arrival</b><p class="mu">Only new stock physically arriving to the Supervisor is added to Main Stock here.</p>${qt('nq')}<label>Note</label><input id="nn" placeholder="Lorry no / supplier / delivery note"><p><button class="b p" onclick="subN()">Add Stock to Main</button></p></div>`;
+ if(tab=='summary') content=`<div class="c w"><b>Daily Summary – ${d}</b><table><tr><th>Item</th><th>Main Stock</th><th>S1 Issued</th><th>S2 Issued</th><th>Total Sales</th><th>S1 Return</th><th>S2 Return</th><th>Total Return</th></tr>${rows}<tr class="t"><td>Total</td><td>${T(i=>mn(i,d))}</td><td>${T(i=>issue('S1',i,d))}</td><td>${T(i=>issue('S2',i,d))}</td><td>${T(i=>sl('S1',i,d)+sl('S2',i,d))}</td><td>${T(i=>rt('S1',i,d)||0)}</td><td>${T(i=>rt('S2',i,d)||0)}</td><td>${T(i=>(rt('S1',i,d)||0)+(rt('S2',i,d)||0))}</td></tr></table></div>`;
+ return `<h1>Supervisor</h1>${dt()}${panel}${content}`;
+}
+async function subIssue(){
+ const d=$('idate').value,st=$('ist').value,it=rv('iq');
+ if(!d)return alert('Select issue date');
+ if(!Object.keys(it).length)return alert('Enter at least one quantity');
+ for(const i of Object.keys(it)){
+   if(it[i]>mn(i,d))return alert(i+': only '+mn(i,d)+' available in Main Stock');
+ }
+ await put({k:'issue',st,d,it,n:'Main Stock Issue'});
+}
+async function subN(){const it=rv('nq');if(!Object.keys(it).length)return alert('Enter quantities');await put({k:'in',st:'MAIN',d:F.d,it,n:$('nn').value.trim()})}
+async function seed(){const it={EGB:104,'Cream Soda':54,Necto:55,'Orange Crush':59,Lemonade:211,'Kik cola':94,Soda:92,Tonic:94,'Ginger Ale':33,'Water Bottle':514,'Fito mix':23,'Fito Orange':22,'Fito Mango':12};if(confirm('Add 06 Oct balances to main stock?'))await put({k:'in',st:'MAIN',d:'2026-10-06',it,n:'Balance from 06 Oct photo'})}
+function ibox(){return `<div class="c np"><b>Add New Item</b><div class="f"><div><label>Item name</label><input id="ni"></div><button class="b p" onclick="addI()">+ Add Item</button></div></div>`}
+async function addI(){const v=$('ni').value.trim();if(!v||IT().includes(v))return;try{await db.collection('cfg').doc('items').set({list:[...IT(),v]})}catch(e){alert('Could not save')}}
+/* ADMIN */
+function editEntry(id){
+ const e=E.find(x=>x.id===id); if(!e)return;
+ adminEditId=id;
+ const it=e.it||{};
+ const box=`<div class="editbox" id="editBox"><b>✏ Edit Entry</b><div class="f admin-tools">
+  <div><label>Date</label><input type="date" id="edDate" value="${e.d||td()}"></div>
+  <div><label>Type</label><select id="edType"><option value="in" ${e.k=='in'?'selected':''}>Stock In / Restock</option><option value="issue" ${e.k=='issue'?'selected':''}>Issue to Stall</option><option value="recv" ${e.k=='recv'?'selected':''}>Stock Received</option><option value="sale" ${e.k=='sale'?'selected':''}>Sale</option><option value="extra" ${e.k=='extra'?'selected':''}>Additional Sale</option><option value="ret" ${e.k=='ret'?'selected':''}>Return</option></select></div>
+  <div><label>Location</label><select id="edSt"><option value="MAIN" ${e.st=='MAIN'?'selected':''}>Main Stock</option><option value="S1" ${e.st=='S1'?'selected':''}>Stall 1</option><option value="S2" ${e.st=='S2'?'selected':''}>Stall 2</option></select></div>
+  <div><label>Note</label><input id="edNote" value="${String(e.n||'').replace(/"/g,'&quot;')}"></div></div>
+  <div class="w" style="margin-top:10px"><table><tr><th>Item</th><th>Quantity</th></tr>${IT().map(i=>`<tr><td>${i}</td><td><input type="number" min="0" inputmode="numeric" class="editq" data-i="${i}" value="${it[i]??''}" style="width:90px"></td></tr>`).join('')}</table></div>
+  <div class="action-grid" style="display:flex;gap:8px;margin-top:10px"><button class="b p" onclick="saveEdit()">Save Changes</button><button class="b" onclick="cancelEdit()">Cancel</button></div></div>`;
+ const holder=document.getElementById('editHolder'); if(holder){holder.innerHTML=box; holder.scrollIntoView({behavior:'smooth',block:'start'});}
+}
+function cancelEdit(){adminEditId=null;const h=document.getElementById('editHolder');if(h)h.innerHTML='';}
+async function saveEdit(){
+ if(!adminEditId)return;
+ const e=E.find(x=>x.id===adminEditId); if(!e)return;
+ const it={};document.querySelectorAll('.editq').forEach(x=>{if(x.value!==''&&+x.value>0)it[x.dataset.i]=+x.value;});
+ const o={k:$('edType').value,st:$('edSt').value,d:$('edDate').value,it,n:$('edNote').value.trim(),ts:e.ts||Date.now(),editedAt:Date.now()};
+ try{await db.collection('entries').doc(adminEditId).set(o);adminEditId=null;draw();alert('Entry updated successfully.');}catch(err){alert('Could not update entry: '+(err.code||err.message));}
+}
+async function clearAllData(){
+ if(!confirm('Clear ALL stock, sales, issue, received and return transaction data? This cannot be undone.'))return;
+ if(!confirm('FINAL CONFIRMATION: Delete all transaction data from Firebase?'))return;
+ try{
+  const snap=await firestore.collection('entries').get();
+  const docs=snap.docs;
+  for(let i=0;i<docs.length;i+=400){const batch=firestore.batch();docs.slice(i,i+400).forEach(d=>batch.delete(d.ref));await batch.commit();}
+  adminEditId=null;draw();alert('All transaction data cleared. Items list was kept.');
+ }catch(err){alert('Could not clear data: '+(err.code||err.message));}
+}
+function adm(){
+ const a=e=>(!F.d1||e.d>=F.d1)&&(!F.d2||e.d<=F.d2),ds=[...new Set(E.map(e=>e.d))].sort(),ld=F.d2||ds[ds.length-1]||td(),sh=SH().filter(a);
+ const B=(i,d)=>mn(i,d)+bs('S1',i,d)+bs('S2',i,d),In=i=>sq(i,e=>e.k=='in'&&a(e)),S=i=>sq(i,e=>(e.k=='sale'||e.k=='extra')&&a(e));
+ const TI=tot(In),TS=tot(S),TB=tot(i=>B(i,ld)),sc=(d,st)=>tot(i=>sl(st,i,d)),si=(d,st)=>tot(i=>issue(st,i,d));
+ const log=[...E].sort((x,y)=>y.ts-x.ts).slice(0,60);
+ return `<h1>🔐 Admin Dashboard</h1><div class="ok np">Full Access • Admin can view and manage all stock, sales, issues, returns and reports.</div><div class="c np"><div class="f"><div><label>From</label><input type="date" value="${F.d1}" onchange="F.d1=this.value;draw()"></div><div><label>To</label><input type="date" value="${F.d2}" onchange="F.d2=this.value;draw()"></div><button class="b p" onclick="print()">Print report</button></div></div>
+ ${sh.length?`<div class="al np"><b class="ng">⚠ Shortages (${sh.length})</b><div class="w"><table><tr><th>Date</th><th>Stall</th><th>Item</th><th>Expected</th><th>Returned</th><th>Short</th></tr>${sh.map(x=>`<tr class="rd"><td>${x.d}</td><td>${ST[x.st]}</td><td>${x.i}</td><td>${x.e}</td><td>${x.r}</td><td>-${x.e-x.r}</td></tr>`).join('')}</table></div></div>`:'<div class="ok np">✔ No shortages</div>'}
+ <div class="g np"><div class="k"><b>${TI}</b><span>Total Stocks In</span></div><div class="k"><b>${TS}</b><span>Total Sales</span></div><div class="k"><b>${TB}</b><span>Balance (${ld})</span></div></div>
+ <div class="c w np"><b>By Stall</b><table><tr><th>Stall</th><th>Issued</th><th>Other Received</th><th>Sales</th><th>Balance</th></tr>${Object.keys(ST).map(s=>`<tr><td>${ST[s]}</td><td>${tot(i=>sq(i,e=>e.k=='issue'&&e.st==s&&a(e)))}</td><td>${tot(i=>sq(i,e=>e.k=='recv'&&e.st==s&&a(e)))}</td><td>${tot(i=>sq(i,e=>(e.k=='sale'||e.k=='extra')&&e.st==s&&a(e)))}</td><td>${tot(i=>bs(s,i,ld))}</td></tr>`).join('')}<tr><td>Main Stock</td><td>${tot(i=>sq(i,e=>e.k=='issue'&&e.st!='MAIN'&&a(e)))}</td><td>-</td><td>-</td><td>${tot(i=>mn(i,ld))}</td></tr></table></div>
+ <div class="c w np"><b>Date-wise</b><table><tr><th>Date</th><th>Stock In</th><th>S1 Issued</th><th>S2 Issued</th><th>Total Sales</th><th>Closing Balance</th></tr>${ds.filter(d=>(!F.d1||d>=F.d1)&&(!F.d2||d<=F.d2)).map(d=>`<tr><td>${d}</td><td>${tot(i=>sq(i,e=>e.k=='in'&&e.d==d))}</td><td>${si(d,'S1')}</td><td>${si(d,'S2')}</td><td>${sc(d,'S1')+sc(d,'S2')}</td><td>${tot(i=>B(i,d))}</td></tr>`).join('')||'<tr><td colspan=6>No data</td></tr>'}</table></div>
+ <div class="c w"><b>Stock Report${F.d1?' '+F.d1:''} to ${ld}</b><table><tr><th>Item</th><th>Stocks</th><th>Sales</th><th>Balance</th></tr>${IT().map(i=>`<tr><td>${i}</td><td>${In(i)}</td><td>${S(i)}</td><td>${B(i,ld)}</td></tr>`).join('')}<tr class="t"><td>Total</td><td>${TI}</td><td>${TS}</td><td>${TB}</td></tr></table></div>`+ibox()+
+ `<div class="c np"><b>Admin Data Management</b><p class="mu">Admin can edit individual records or clear all transaction data. The item list is kept when transaction data is cleared.</p><div class="action-grid admin-tools"><button class="b p" onclick="document.getElementById('entriesBox').scrollIntoView({behavior:'smooth'})">✏ Edit Entries</button><button class="b danger" onclick="clearAllData()">🗑 Clear All Transaction Data</button></div></div><div id="editHolder"></div><div class="c w np" id="entriesBox"><b>Entries (latest 60)</b><table><tr><th>Date</th><th>Where</th><th>Type</th><th>Items / Note</th><th>Actions</th></tr>${log.map(e=>`<tr><td>${e.d}</td><td>${ST[e.st]||'Main'}</td><td>${e.k}</td><td style="text-align:left">${fm(e)} ${e.n||''}</td><td><button class="b" style="padding:6px 9px;margin-right:4px" onclick="editEntry('${e.id}')">Edit</button><button class="x" onclick="delE('${e.id}')">✕</button></td></tr>`).join('')}</table></div>`;
+}
+async function delE(id){if(confirm('Delete this entry?'))try{await db.collection('entries').doc(id).delete()}catch(e){alert('Could not delete')}}
+(function(){
+  // Online Firebase Firestore adapter. This replaces the old browser-only LocalStorage database.
+  db={
+    collection:function(name){
+      const c=firestore.collection(name);
+      return {
+        add:function(o){ return c.add(o); },
+        onSnapshot:function(cb,err){ return c.onSnapshot(cb,err); },
+        doc:function(id){
+          const d=c.doc(id);
+          return {
+            set:function(o){ return d.set(o); },
+            delete:function(){ return d.delete(); },
+            onSnapshot:function(cb,err){ return d.onSnapshot(cb,err); }
+          };
+        }
+      };
+    }
+  };
+
+  ro=false;
+  db.collection('entries').onSnapshot(function(s){
+    E=s.docs.map(function(d){return {id:d.id,...d.data()};});
+    rd();
+  },function(e){
+    console.error(e);
+    alert('Firebase connection error: '+(e.code||e.message||'unknown error'));
+  });
+
+  db.collection('cfg').doc('items').onSnapshot(function(s){
+    CFG=s.exists?s.data().list:null;
+    rd();
+  },function(e){ console.error(e); });
+
+  draw();
+})();
+</script></body></html>
